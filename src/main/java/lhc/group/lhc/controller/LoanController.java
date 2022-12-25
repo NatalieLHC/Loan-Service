@@ -4,9 +4,11 @@ import lhc.group.lhc.dto.LoanSearchParams;
 import lhc.group.lhc.entity.Loan;
 import lhc.group.lhc.repository.LoanRepository;
 import lhc.group.lhc.service.LoanService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -22,8 +24,17 @@ public class LoanController {
     }
 
     @GetMapping
-    public List<Loan> getLoans(LoanSearchParams loanSearchParams){
-        return loanService.getLoans(loanSearchParams);
+    public Page<Loan> getLoans(LoanSearchParams loanSearchParams,
+                               @RequestParam(required = false, defaultValue = "0") int page,
+                               @RequestParam(required = false, defaultValue = "10") int size) {
+        return loanService.getLoans(loanSearchParams, PageRequest.of(page, size));
+    }
+
+    @PostMapping
+    public ResponseEntity<Loan> registerLoan(@RequestBody Loan loan) {
+        loanService.registerLoan(loan);
+        var location = UriComponentsBuilder.fromPath("/loans/" + loan.getLoanId()).build().toUri();
+        return ResponseEntity.created(location).body(loan);
     }
 
 }
