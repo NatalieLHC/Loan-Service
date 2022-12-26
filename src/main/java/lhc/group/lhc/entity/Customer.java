@@ -33,6 +33,6 @@ public class Customer {
     private LocalDateTime updateDate;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Loan> loans;
 }
