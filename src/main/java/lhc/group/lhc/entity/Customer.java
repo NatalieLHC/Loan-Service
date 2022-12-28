@@ -27,12 +27,12 @@ public class Customer {
     private String lastName;
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at",  updatable = false, insertable = false)
     private LocalDateTime createDate;
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = false,  updatable = false, insertable = false)
     private LocalDateTime updateDate;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Loan> loans;
 }

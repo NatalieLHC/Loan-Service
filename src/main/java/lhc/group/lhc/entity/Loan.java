@@ -1,11 +1,10 @@
 package lhc.group.lhc.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,18 +26,19 @@ public class Loan {
     private Integer term;
     private Double interest;
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
-    private LocalDateTime CreateDate;
-    @Column(name = "updated_at", nullable = false,updatable = false, insertable = false)
+    private LocalDateTime createDate;
+    @Column(name = "updated_at", updatable = false, insertable = false)
     private LocalDateTime updateDate;
-    @Column(name = "collateral_id", nullable = false,  updatable = false)
+    @Column(name = "collateral_id", nullable = false)
     private Integer collateralId;
     @Column(name = "customer_id", nullable = false,  updatable = false, insertable = false)
     private Integer customerId;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "loan")
+    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL)
     private List<Collateral> collateral;
+
 }
