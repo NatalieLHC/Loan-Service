@@ -71,18 +71,11 @@ public class LoanServiceImpl implements LoanService {
         if (loan.getCustomer().getCustomerId() == null) {
             customerService.addCustomer(loan.getCustomer());
         }
-        if (loan.getCollateral().get( loan.getCollateralId()) == null){
+        if (loan.getCollateral().get(loan.getCollateralId()) == null) {
             collateralService.addCollateral(loan.getCollateral());
         }
-            return loanRepository.save(loan);
+        return loanRepository.save(loan);
     }
-//    @Scheduled(fixedRate = 10000)
-//    public Loan updateInterest(){
-//        var daily_interest_rate = interestRate / 365;
-//        ((amount * daily_interest_rate) / (24 * 60)) * (now() - updateDate);
-//
-//        return interest+=+daily_interest_rate;
-//    }
 }
 
 
