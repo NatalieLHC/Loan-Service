@@ -2,6 +2,7 @@ package lhc.group.lhc.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
 @SequenceGenerator(name = "loansIdGenerator", sequenceName = "loans_id_seq", allocationSize = 1)
 @Table(name = "loans")
 public class Loan {
@@ -29,10 +31,6 @@ public class Loan {
     private LocalDateTime createDate;
     @Column(name = "updated_at", updatable = false, insertable = false)
     private LocalDateTime updateDate;
-    @Column(name = "collateral_id", nullable = false)
-    private Integer collateralId;
-    @Column(name = "customer_id", nullable = false,  updatable = false, insertable = false)
-    private Integer customerId;
     @ManyToOne()
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
@@ -41,4 +39,7 @@ public class Loan {
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL)
     private List<Collateral> collateral;
 
+    public Loan() {
+
+    }
 }

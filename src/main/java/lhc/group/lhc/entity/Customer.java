@@ -2,6 +2,7 @@ package lhc.group.lhc.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Builder
 @Data
 @SequenceGenerator(name = "customersIdGenerator", sequenceName = "customers_id_seq", allocationSize = 1)
 @Table(name = "customers")
@@ -26,7 +28,7 @@ public class Customer {
     @Column(name = "last_name", nullable = false)
     private String lastName;
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate;
+    private LocalDateTime birthDate;
     @Column(name = "created_at",  updatable = false, insertable = false)
     private LocalDateTime createDate;
     @Column(name = "updated_at", nullable = false,  updatable = false, insertable = false)
@@ -35,4 +37,8 @@ public class Customer {
     @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Loan> loans;
+
+    public Customer() {
+
+    }
 }
