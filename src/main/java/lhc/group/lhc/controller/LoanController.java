@@ -1,6 +1,7 @@
 package lhc.group.lhc.controller;
 
 import lhc.group.lhc.dto.LoanSearchParams;
+import lhc.group.lhc.dto.RegistrationDto;
 import lhc.group.lhc.entity.Loan;
 import lhc.group.lhc.repository.LoanRepository;
 import lhc.group.lhc.service.LoanService;
@@ -15,11 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/loans")
 public class LoanController {
-    private final LoanRepository loanRepository;
     private final LoanService loanService;
 
-    public LoanController(LoanRepository loanRepository, LoanService loanService) {
-        this.loanRepository = loanRepository;
+    public LoanController( LoanService loanService) {
         this.loanService = loanService;
     }
 
@@ -30,11 +29,20 @@ public class LoanController {
         return loanService.getLoans(loanSearchParams, PageRequest.of(page, size));
     }
 
-    @PostMapping
-    public ResponseEntity<Loan> registerLoan(@RequestBody Loan loan) {
-        loanService.registerLoan(loan);
-        var location = UriComponentsBuilder.fromPath("/loans/" + loan.getLoanId()).build().toUri();
-        return ResponseEntity.created(location).body(loan);
+    @PostMapping("/register")
+    public ResponseEntity<Loan> registerLoan(@RequestBody RegistrationDto registrationDto) {
+        if (registrationDto.getLoan()==null || registrationDto.getCollaterals() ==null || registrationDto.getCustomer()==null){
+            return ResponseEntity.badRequest().build();
+        }
+        Loan registered = loanService.registerLoan(registrationDto);
+        var location = UriComponentsBuilder.fromPath("/loans/{id}").buildAndExpand(registered.getId()).toUri();
+        return ResponseEntity.created(location).body(registered);
     }
+    @GetMapping("/{id}")
+    public  Loan getById(@PathVariable int id){
+        return  loanService.getById(id);
+    }
+
+
 
 }
