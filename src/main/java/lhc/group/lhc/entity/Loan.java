@@ -26,12 +26,10 @@ public class Loan {
     private Double interestRate;
     private Integer term;
     private Double interest;
-    @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime CreateDate;
-    @Column(name = "updated_at", nullable = false,updatable = false, insertable = false)
+    @Column(name = "updated_at", nullable = false,updatable = false)
     private LocalDateTime updateDate;
-    @Column(name = "collateral_id", nullable = false,  updatable = false)
-    private Integer collateralId;
     @Column(name = "customer_id", nullable = false,  updatable = false, insertable = false)
     private Integer customerId;
     @ManyToOne

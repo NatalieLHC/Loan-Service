@@ -23,12 +23,12 @@ public class Collateral {
     private LocalDateTime CreateDate;
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updateDate;
-    @Column(name = "loan_id")
+    @Column(name = "loan_id", insertable = false, updatable = false)
     private Integer LoanId;
 
-    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "loan_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
+    @JoinColumn(name = "loan_id", referencedColumnName = "id")
     private Loan loan;
 
 }
